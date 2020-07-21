@@ -62,7 +62,7 @@
 
                     <div class="col-sm-2 text-right">
                         <div class="font-size-20 text-danger font-baloo">
-                            $<span class="product_price"><?php echo $item['item_price']; ?></span>
+                            $<span class="product_price" data-id="<?php echo $item['item_id'];?>"><?php echo $item['item_price']; ?></span>
                         </div>
                     </div>
                 </div>
