@@ -7,7 +7,7 @@
 <?php
 
     /* include cart template */
-    include('Template/_cart-Template.php');
+    count($cart) ? include('Template/_cart-Template.php') : include('Template/notFound/_cart_notFound.php');
     /* include cart template */
 
     /* include new phones section */

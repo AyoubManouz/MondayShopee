@@ -79,35 +79,40 @@ $(document).ready(function(){
     $qty_up.click(function(e){
         
         let $input = $(`.qty_input[data-id='${$(this).data("id")}']`);
+        let $cart = $(`.qty_cart[data-id='${$(this).data("id")}']`);
         let $price = $(`.product_price[data-id = '${$(this).data("id")}']`);
         
         // change product price using ajax call
         $.ajax({ url: "Template/ajax.php", type: 'post', data: { itemid :$(this).data("id")}, success: function (result){
             let obj = JSON.parse(result);
             let item_price = obj[0]['item_price'];
-            
+
             if($input.val() >= 1 && $input.val() <= 9){
                 $input.val(function(i, oldval){
                     return ++oldval;
                 });
-                
+
                 // increase price of the product
                 $price.text(parseFloat(item_price * $input.val()).toFixed(2));
 
                 // set subTotal price
                 let subtotal = parseFloat($deal_price.text()) + parseFloat(item_price);
                 $deal_price.text(subtotal.toFixed(2));
+
+                $.ajax({ url: "Template/cart_ajax.php", type:'post', data:{ cartid: $cart.val(), amount: $input.val(), price: $price.text()}, success:function (result) {
+                    if (JSON.parse(result)) alert('done');
+                    }});
+
             }
             
             }}); // closing ajax request
-
-        
     });
 
     //Click on qty-down Button
     $qty_down.click(function(e){
         
         let $input = $(`.qty_input[data-id='${$(this).data("id")}']`);
+        let $cart = $(`.qty_cart[data-id='${$(this).data("id")}']`);
         let $price = $(`.product_price[data-id = '${$(this).data("id")}']`);
         
         // change product price using ajax call
@@ -126,12 +131,13 @@ $(document).ready(function(){
                 // set subTotal price
                 let subtotal = parseFloat($deal_price.text()) - parseFloat(item_price);
                 $deal_price.text(subtotal.toFixed(2));
+
+                $.ajax({ url: "Template/cart_ajax.php", type:'post', data:{ cartid: $cart.val(), amount: $input.val(), price: $price.text()}, success:function (result) {
+
+                    }});
             }
             
             }}); // closing ajax request
-
-        
-        
     });
 
 

@@ -31,11 +31,13 @@ class Cart
     }
 
     // Get user_id and item_id and insert them into cart table
-    public function addToCart($userid, $itemid){
-        if (isset($userid) && isset($itemid)){
+    public function addToCart($buyorderid, $itemid, $cartamount = 1, $cartprice = 0){
+        if (isset($buyorderid) && isset($itemid)){
             $params = array(
-                "user_id" => $userid,
-                "item_id" => $itemid
+                "buyorder_id" => $buyorderid,
+                "item_id" => $itemid,
+                "cart_amount" => $cartamount,
+                "cart_price" => $cartprice
             );
 
             // insert data into cart
@@ -47,21 +49,25 @@ class Cart
         }
     }
 
-    // Calculate Sub total
-    public function getSum($arr){
-        if (isset($arr)){
-            $sum = 0;
-            foreach ($arr as $item){
-                $sum += floatval($item[0]);
+    // Edit cart
+    public function editCart($cart_id ,$amount, $price){
+        if($this->db->con != null){
+            if ($cart_id != null && $amount != null && $price != null){
+
+                // create sql query
+                $query_string = sprintf("UPDATE cart SET cart_amount=%s,cart_price=%s WHERE cart_id=%s", $amount, $price, $cart_id);
+
+                // execute query
+                $result = $this->db->con->query($query_string);
+                return $result;
             }
-            return sprintf('%.2f', $sum);
         }
     }
 
     // Delete cart item using cart item id
-    public function deleteCart($item_id = null, $table = 'cart'){
+    public function deleteCart($item_id = null, $buyorder_id = null, $table = 'cart'){
         if ($item_id != null){
-            $result = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
+            $result = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id} AND buyorder_id={$buyorder_id}");
             if ($result){
                 header("Location:".$_SERVER['PHP_SELF']);
             }
@@ -70,12 +76,41 @@ class Cart
     }
     
     // get item_id of shoping cart list
-    public function getCartId($cartArray = null, $key = 'item_id'){
+    public function getCartId($cartArray = null, $item_id = 'item_id'){
         if ($cartArray != null){
-            $cart_id = array_map(function ($value) use($key){
-                return $value[$key];
+            return array_map(function ($value) use($item_id){
+                return $value[$item_id];
             }, $cartArray);
-            return $cart_id;
+        }
+    }
+
+    // get cart from buyorder id
+    public function getCartByBuyorderId($buyorder_id, $table = 'cart'){
+        if (isset($buyorder_id)) {
+            $result = $this->db->con->query("Select * from {$table} WHERE buyorder_id={$buyorder_id}");
+
+            $resultArray = array();
+
+            while ($item = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                $resultArray[] = $item;
+            }
+
+            return $resultArray;
+        }
+    }
+
+    // get cart from cart id
+    public function getCartById($cart_id, $table = 'cart'){
+        if (isset($cart_id)) {
+            $result = $this->db->con->query("Select * from {$table} WHERE cart_id={$cart_id}");
+
+            $resultArray = array();
+
+            while ($item = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                $resultArray[] = $item;
+            }
+
+            return $resultArray;
         }
     }
 }

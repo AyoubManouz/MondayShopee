@@ -7,7 +7,7 @@ class DBController
     protected $host = 'localhost';
     protected $user = 'root';
     protected $password = '';
-    protected $database = 'shopee';
+    protected $database = 'ecommerce';
 
     // Connection property
     public $con = null;

@@ -17,10 +17,20 @@
     <!-- Custom CSS file -->
     <link rel="stylesheet" href="style.css">
 
-
     <?php
         // Require functions.php file
         require ('functions.php');
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            if (isset($_POST['login'])){
+                header("Location: http://localhost/MondayShopee/login.php");
+            }
+            if (isset($_POST['disconnect'])){
+                $_SESSION["id"] = null;
+                header("Location: http://localhost/MondayShopee/index.php");
+            }
+        }
     ?>
 
 </head>
@@ -29,51 +39,29 @@
 <!-- Create header -->
 <header id="header">
     <div class="strip d-flex justify-content-between px-4 py-1 bg-light">
-        <p class="font-rale font-size-12 text-black-50 m-0">Something</p>
+        <p class="font-rale font-size-12 text-black-50 m-0">Welcome <?php echo $_SESSION['name']?></p>
         <div class="font-rale font-size-14">
-            <a href="#" class="px-3 border-right border-left text-dark">Login</a>
-            <a href="#" class="px-3 border-right text-dark">Wishlist (0)</a>
+            <?php
+                if(!isset($user)){
+                    echo '<a href="login.php" name="login" class="px-3 border-right border-left text-dark">Login</a>';
+                }else{
+                    echo '<a href="login.php" name="disconnect" class="px-3 border-right border-left text-dark">Disconnect</a>';
+                }
+            ?>
         </div>
     </div>
 
     <!-- Primary navigation bar-->
     <nav class="navbar navbar-expand-lg navbar-dark color-second-bg">
-        <a class="navbar-brand" href="#">Monday Electronics</a>
+        <a class="navbar-brand" href="index.php">Monday Electronics</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav m-auto font-rubik">
-
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">On Sale</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Category</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Products <i class="fas fa-chevron-down"></i></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Blog</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Category <i class="fas fa-chevron-down"></i></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Comming Soon</a>
-                </li>
-
-            </ul>
+        <div class="collapse d-flex justify-content-end navbar-collapse" id="navbarNav">
             <form action="#" class="font-size-14 font-rale">
                 <a href="cart.php" class="py-2 rounded-pill color-primary-bg">
                     <span class="font-size-16 px-2 text-white"><i class="fas fa-shopping-cart"></i></span>
-                    <span class="px-3 py-2 rounded-pill text-dark bg-light"><?php echo count($product->getData('cart'));?></span>
+                    <span class="px-3 py-2 rounded-pill text-dark bg-light"><?php echo isset($cart)? count($cart) : 0;?></span>
                 </a>
             </form>
         </div>
@@ -82,4 +70,4 @@
 </header>
 
 <!-- Create main -->
-<main id="main-site">
+<main id="main-site log">

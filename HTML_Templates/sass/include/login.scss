@@ -1,0 +1,23 @@
+/*login class*/
+.log{
+  background-image:url("../Assets/1.jpg");
+  background-size: cover;
+  background-position: center;
+}
+.login-box{
+  max-width: 700px;
+  float: none;
+  margin: 200px auto;
+}
+.login-left{
+  background: rgb(211,211,211,0.5);
+  padding-top: 100px !important;
+  padding: 30px;
+}
+.login-right{
+  background: #fff;
+  padding: 30px;
+}
+.form-control{
+  background-color: transparent !important;
+}
