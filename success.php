@@ -6,6 +6,14 @@ include('header.php');
 
 if ($buyorder['buyorder_price'] != 0){
     require('./charge.php');
+
+    // the message
+    $msg = "Hello Dear ".$_POST['first_name']."\nThank you for purchasing";
+    // use wordwrap() if lines are longer than 70 characters
+    $msg = wordwrap($msg,70);
+    // send email
+    mail($_SESSION['email'],"Purchasing on Monday Shopee",$msg);
+
     header("location:success.php");
 }
 

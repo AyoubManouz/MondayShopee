@@ -99,8 +99,8 @@ $(document).ready(function(){
                 let subtotal = parseFloat($deal_price.text()) + parseFloat(item_price);
                 $deal_price.text(subtotal.toFixed(2));
 
-                $.ajax({ url: "Template/cart_ajax.php", type:'post', data:{ cartid: $cart.val(), amount: $input.val(), price: $price.text()}, success:function (result) {
-                    if (JSON.parse(result)) alert('done');
+                $.ajax({ url: "Template/cart_ajax.php", type:'post', data:{ cartid: $cart.val(), amount: $input.val(), price: $price.text()}, success:function () {
+
                     }});
 
             }
@@ -132,7 +132,7 @@ $(document).ready(function(){
                 let subtotal = parseFloat($deal_price.text()) - parseFloat(item_price);
                 $deal_price.text(subtotal.toFixed(2));
 
-                $.ajax({ url: "Template/cart_ajax.php", type:'post', data:{ cartid: $cart.val(), amount: $input.val(), price: $price.text()}, success:function (result) {
+                $.ajax({ url: "Template/cart_ajax.php", type:'post', data:{ cartid: $cart.val(), amount: $input.val(), price: $price.text()}, success:function () {
 
                     }});
             }
